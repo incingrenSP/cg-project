@@ -3,7 +3,7 @@ from pytmx.util_pygame import load_pygame
 from settings import *
 from player import Player
 from overlay import Overlay
-from sprites import Generic, Water
+from sprites import Generic, Water, Decors, Tree
 from support import *
 
 class Level:
@@ -25,12 +25,27 @@ class Level:
             for x, y, surf in tmx_data.get_layer_by_name(layer).tiles():
                 Generic((x * TILE_SIZE, y * TILE_SIZE), surf, self.all_sprites, LAYERS['ground'])
 
-
-        water_frames = import_folder(os.path.join(os.path.dirname(__file__),'..', 'graphics', 'water'))
         for x, y, surf in tmx_data.get_layer_by_name('water').tiles():
-            Water(
-                (x * TILE_SIZE, y * TILE_SIZE), water_frames, self.all_sprites
+            Generic((x * TILE_SIZE, y * TILE_SIZE), surf, self.all_sprites, LAYERS['water'])
+
+        # water_frames = import_folder(os.path.join(os.path.dirname(__file__),'..', 'graphics', 'water'))
+        # for x, y, surf in tmx_data.get_layer_by_name('water').tiles():
+        #     Water(
+        #         (x * TILE_SIZE, y * TILE_SIZE), water_frames, self.all_sprites
+        #     )
+
+
+
+        for obj in tmx_data.get_layer_by_name('groundobj'):
+            Decors(
+                (obj.x, obj.y), obj.image, self.all_sprites
             )
+        
+        for obj in tmx_data.get_layer_by_name('trees'):
+            Tree(
+                (obj.x, obj.y), obj.image, self.all_sprites
+            )
+        
         self.player = Player((640, 360), self.all_sprites)
 
     def run(self, dt):
@@ -52,7 +67,7 @@ class CameraGroup(pygame.sprite.Group):
 
 
         for layer in LAYERS.values():
-            for sprite in self.sprites():
+            for sprite in sorted(self.sprites(), key = lambda sprite: sprite.rect.centery):
                 if sprite.z == layer:
                     offset_rect = sprite.rect.copy()
                     offset_rect.center -= self.offset
