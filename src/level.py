@@ -3,7 +3,8 @@ from pytmx.util_pygame import load_pygame
 from settings import *
 from player import Player
 from overlay import Overlay
-from sprites import Generic
+from sprites import Generic, Water
+from support import *
 
 class Level:
     def __init__(self):
@@ -17,12 +18,19 @@ class Level:
         self.overlay = Overlay(self.player)
 
     def setup(self):
-        Generic(
-            pos = (0,0),
-            surf = pygame.image.load(os.path.join(os.path.dirname(__file__), '..', 'graphics', 'world', 'world.png')).convert_alpha(),
-            groups = self.all_sprites,
-            z = LAYERS['ground']
-        )
+
+        tmx_data = load_pygame(os.path.join(os.path.dirname(__file__), '..', 'data', 'world.tmx'))
+
+        for layer in ['ground', 'ground2']:
+            for x, y, surf in tmx_data.get_layer_by_name(layer).tiles():
+                Generic((x * TILE_SIZE, y * TILE_SIZE), surf, self.all_sprites, LAYERS['ground'])
+
+
+        water_frames = import_folder(os.path.join(os.path.dirname(__file__),'..', 'graphics', 'water'))
+        for x, y, surf in tmx_data.get_layer_by_name('water').tiles():
+            Water(
+                (x * TILE_SIZE, y * TILE_SIZE), water_frames, self.all_sprites
+            )
         self.player = Player((640, 360), self.all_sprites)
 
     def run(self, dt):

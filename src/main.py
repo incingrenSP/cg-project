@@ -6,7 +6,7 @@ class Game:
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-        pygame.display.set_caption('WEATHERING IMPACT')
+        pygame.display.set_caption("WE'RE LIVING LIKE GIANTS!!!")
         self.clock = pygame.time.Clock()
         self.level = Level()
 

@@ -19,11 +19,11 @@ class Player(pygame.sprite.Sprite):
         # movement attributes
         self.direction = pygame.math.Vector2()
         self.pos = pygame.math.Vector2(self.rect.center)
-        self.speed = 400
+        self.speed = 200
 
         # toggles
         self.timers = {
-            'jump' : Timer(750, self.jump),
+            'run' : Timer(750, self.run),
             'weapon_switch' : Timer(200),
             'item_use' : Timer(750, self.item_use),
             'item_switch' : Timer(500)
@@ -39,11 +39,12 @@ class Player(pygame.sprite.Sprite):
         self.item_index = 0
         self.selected_item = self.items[self.item_index]
 
-    def jump(self):
-        if self.timers['jump'].active:
-            self.speed = 550
-        else:
+    def run(self):
+        if self.timers['run'].active:
             self.speed = 400
+        else:
+            self.speed = 200
+        
 
     def item_use(self):
         pass
@@ -53,9 +54,6 @@ class Player(pygame.sprite.Sprite):
             'up_idle' : [], 'down_idle' : [], 'left_idle' : [], 'right_idle' : [],
             'up_walk' : [], 'down_walk' : [], 'left_walk' : [], 'right_walk' : [],
             'up_run' : [], 'down_run' : [], 'left_run' : [], 'right_run' : [],
-            'up_jump' : [], 'down_jump' : [], 'left_jump' : [], 'right_jump' : [],
-            'up_sword' : [], 'down_sword' : [], 'left_sword' : [], 'right_sword' : [],
-            'up_attack' : [], 'down_attack' : [], 'left_attack' : [], 'right_attack' : []
         }
         for animation in self.animations.keys():
             full_path = os.path.join(os.path.dirname(__file__), '..', 'graphics', 'character', animation)
@@ -94,10 +92,9 @@ class Player(pygame.sprite.Sprite):
                 self.direction.x = 0
             
             # toggle
-            if keys[pygame.K_SPACE]:
+            if keys[pygame.K_SPACE] and not self.timers['run'].active:
                 # timer for jump
-                self.timers['jump'].activate()
-                self.direction = pygame.math.Vector2()
+                self.timers['run'].activate()
                 self.frame_index = 0
 
             # switch weapon
@@ -113,10 +110,6 @@ class Player(pygame.sprite.Sprite):
                 self.selected_weapon = self.weapons[self.weapon_index]
 
             # item use
-            if mouse[0] and not self.timers['item_use'].active:
-                self.timers['item_use'].activate()
-                self.direction = pygame.math.Vector2()
-                self.frame_index = 0
 
             # item switch
             if mouse[2] and not self.timers['item_switch'].active:
@@ -131,8 +124,9 @@ class Player(pygame.sprite.Sprite):
             self.status = self.status.split('_')[0] + '_idle'
 
         # jump
-        if self.timers['jump'].active:
-            self.status = self.status.split('_')[0] + '_jump'
+        if self.timers['run'].active:
+            self.status = self.status.split('_')[0] + '_run'
+
         # item use
         if self.timers['item_use'].active:
             self.status = self.status.split('_')[0] + '_attack'

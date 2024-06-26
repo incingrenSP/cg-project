@@ -1,6 +1,6 @@
 import os
 
-path = os.path.join('src', '..','graphics', 'overlay')
+path = os.path.join('src', '..','graphics', 'water')
 
 
 for root, dirs, img_files in os.walk(path):
