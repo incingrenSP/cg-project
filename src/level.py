@@ -17,12 +17,6 @@ class Level:
         self.overlay = Overlay(self.player)
 
     def setup(self):
-
-        # tmx_data = load_pygame(os.path.join(os.path.dirname(__file__), '..', 'data', 'world.tmx'))
-        # # ground
-        # for x, y, surf in tmx_data.get_layer_by_name('ground').tiles():
-        #     Generic((x * TILE_SIZE, y * TILE_SIZE), surf, self.all_sprites, z = LAYERS['ground'])
-
         Generic(
             pos = (0,0),
             surf = pygame.image.load(os.path.join(os.path.dirname(__file__), '..', 'graphics', 'world', 'world.png')).convert_alpha(),
