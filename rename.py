@@ -10,7 +10,7 @@ def mass_rename(path):
         os.rename(os.path.join(path, filename), os.path.join(path, new_name))
         i += 1
         
-folder = ['idle', 'walk', 'run']
+folder = ['walk', 'run']
 sfolder = ['up', 'down', 'left', 'right']
 for item in folder:
     for file in sfolder:
