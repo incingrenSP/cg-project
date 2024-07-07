@@ -7,6 +7,7 @@ class Generic(pygame.sprite.Sprite):
         self.image = surf
         self.rect = self.image.get_rect(topleft = pos)
         self.z = z
+        self.hitbox = self.rect.copy()
 
 class Water(Generic):
     def __init__(self, pos, frames, groups):
@@ -24,7 +25,7 @@ class Water(Generic):
         )
 
     def animate(self, dt):
-        self.frame_index += 40 * dt
+        self.frame_index += 17 * dt
         if self.frame_index > len(self.frames):
             self.frame_index = 0
 
@@ -36,7 +37,10 @@ class Water(Generic):
 class Decors(Generic):
     def __init__(self, pos, surf, groups):
         super().__init__(pos, surf, groups)
+        self.z = LAYERS['soil']
+        self.hitbox = self.rect.copy()
 
 class Tree(Generic):
     def __init__(self, pos, surf, groups):
         super().__init__(pos, surf, groups)
+        self.hitbox = self.rect.copy()
