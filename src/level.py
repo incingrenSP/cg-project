@@ -20,27 +20,27 @@ class Level:
 
     def setup(self):
 
-        # tmx_data = load_pygame(os.path.join(os.path.dirname(__file__), '..', 'data', 'world.tmx'))
+        tmx_data = load_pygame(os.path.join(os.path.dirname(__file__), '..', 'data', 'tmx', 'world.tmx'))
 
-        # for layer in ['ground', 'ground2']:
-        #     for x, y, surf in tmx_data.get_layer_by_name(layer).tiles():
-        #         Generic((x * TILE_SIZE, y * TILE_SIZE), surf, self.all_sprites, LAYERS['ground'])
+        for layer in ['ground']:
+            for x, y, surf in tmx_data.get_layer_by_name(layer).tiles():
+                Generic((x * TILE_SIZE, y * TILE_SIZE), surf, self.all_sprites, LAYERS['ground'])
 
-        # water_frames = import_folder(os.path.join(os.path.dirname(__file__),'..', 'graphics', 'water'))
-        # for x, y, surf in tmx_data.get_layer_by_name('water').tiles():
-        #     Water(
-        #         (x * TILE_SIZE, y * TILE_SIZE), water_frames, self.all_sprites
-        #     )
+        water_frames = import_folder(os.path.join(os.path.dirname(__file__),'..', 'graphics', 'water'))
+        for x, y, surf in tmx_data.get_layer_by_name('water').tiles():
+            Water(
+                (x * TILE_SIZE, y * TILE_SIZE), water_frames, self.all_sprites
+            )
 
         # for obj in tmx_data.get_layer_by_name('groundobj'):
         #     Decors(
         #         (obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites]
         #     )
         
-        # for obj in tmx_data.get_layer_by_name('trees'):
-        #     Tree(
-        #         (obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites]
-        #     )
+        for obj in tmx_data.get_layer_by_name('trees'):
+            Tree(
+                (obj.x, obj.y), obj.image, [self.all_sprites, self.collision_sprites]
+            )
         
         self.player = Player((640, 360), self.all_sprites, self.collision_sprites)
 
