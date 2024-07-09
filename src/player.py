@@ -5,7 +5,7 @@ import os
 from timer import Timer
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_group):
+    def __init__(self, pos, group, collision_sprites):
         super().__init__(group)
 
         self.import_assets()
@@ -24,7 +24,7 @@ class Player(pygame.sprite.Sprite):
 
         # collision
         self.hitbox = self.rect.copy()
-        self.collision_groups = collision_group
+        self.collision_sprites = collision_sprites
 
         # toggles
         self.timers = {
@@ -58,18 +58,19 @@ class Player(pygame.sprite.Sprite):
         self.animations = {
             'up_idle' : [], 'down_idle' : [], 'left_idle' : [], 'right_idle' : [],
             'up_walk' : [], 'down_walk' : [], 'left_walk' : [], 'right_walk' : [],
-            'up_run' : [], 'down_run' : [], 'left_run' : [], 'right_run' : [],
+            'up_attack' : [], 'down_attack' : [], 'left_attack' : [], 'right_attack' : []
         }
         for animation in self.animations.keys():
             full_path = os.path.join(os.path.dirname(__file__), '..', 'graphics', 'character', animation)
             self.animations[animation] = import_folder(full_path)
 
     def animate(self, dt):
-        self.frame_index += 9 * dt
+        self.frame_index += 6 * dt
         if self.frame_index > len(self.animations[self.status]):
             self.frame_index = 0
 
         self.image = self.animations[self.status][int(self.frame_index)]
+        self.image = pygame.transform.scale2x(self.image)
 
     def input(self):
         keys = pygame.key.get_pressed()
@@ -117,6 +118,11 @@ class Player(pygame.sprite.Sprite):
             # item use
 
             # item switch
+            if mouse[0] and not self.timers['item_use'].active:
+                self.timers['item_use'].activate()
+                self.direction = pygame.math.Vector2()
+                self.frame_index = 0
+
             if mouse[2] and not self.timers['item_switch'].active:
                 self.timers['item_switch'].activate()
                 self.item_index += 1
@@ -128,11 +134,7 @@ class Player(pygame.sprite.Sprite):
         if self.direction.magnitude() == 0:
             self.status = self.status.split('_')[0] + '_idle'
 
-        # jump
-        if self.timers['run'].active:
-            self.status = self.status.split('_')[0] + '_run'
-
-        # item use
+        # attack
         if self.timers['item_use'].active:
             self.status = self.status.split('_')[0] + '_attack'
         
@@ -141,29 +143,28 @@ class Player(pygame.sprite.Sprite):
             timer.update()
 
     def collision(self, direction):
-        for sprite in self.collision_groups.sprites():
+        for sprite in self.collision_sprites.sprites():
             if hasattr(sprite, 'hitbox'):
-                if self.hitbox.colliderect(self.hitbox):
+                if sprite.hitbox.colliderect(self.hitbox):
                     if direction == 'horizontal':
-                        # moving right
-                        if self.direction.x > 0:
+                        # horitzontal collision
+                        if self.direction.x > 0: # moving right
                             self.hitbox.right = sprite.hitbox.left
-                        # moving left
-                        if self.direction.x < 0:
+                        if self.direction.x < 0: # moving left
                             self.hitbox.left = sprite.hitbox.right
                         self.rect.centerx = self.hitbox.centerx
-                        self.rect.centery = self.hitbox.centery
-                    
-                    if direction == 'vertical':
-                        # moving up
-                        if self.direction.y < 0:
-                            self.hitbox.top = sprite.hitbox.bottom
-                        # moving down
-                        if self.direction.y > 0:
-                            self.hitbox.bottom = sprite.hitbox.top
-                        self.rect.centerx = self.hitbox.centerx
-                        self.rect.centery = self.hitbox.centery
+                        self.pos.x = self.hitbox.centerx
 
+                    if direction == 'vertical':
+                        # vertical collision
+                        if self.direction.y > 0: # moving down
+                            self.hitbox.bottom = sprite.hitbox.top
+                        if self.direction.y < 0: # moving up
+                            self.hitbox.top = sprite.hitbox.bottom
+                        
+                        self.rect.centery = self.hitbox.centery
+                        self.pos.y = self.hitbox.centery
+                    
 
     def move(self, dt):
        
@@ -175,13 +176,13 @@ class Player(pygame.sprite.Sprite):
        self.pos.x += self.direction.x * self.speed * dt
        self.hitbox.centerx = round(self.pos.x)
        self.rect.centerx = self.hitbox.centerx
-       self.collision = 'horizontal'
+       self.collision('horizontal')
 
        # vertical movement
        self.pos.y += self.direction.y * self.speed * dt
        self.hitbox.centery = round(self.pos.y)
        self.rect.centery = self.hitbox.centery
-       self.collision = 'vertical'
+       self.collision('vertical')
 
     def update(self, dt):
         self.input()

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="156">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="165">
  <tileset firstgid="1" source="../tsx/Tileset.tsx"/>
  <tileset firstgid="856" source="../tsx/trees.tsx"/>
  <layer id="1" name="water" width="50" height="50">
@@ -305,19 +305,6 @@
  <objectgroup id="3" name="trees">
   <object id="7" gid="856" x="1017" y="619" width="64" height="96"/>
   <object id="46" gid="856" x="1180" y="606" width="64" height="96"/>
-  <object id="47" gid="856" x="413" y="555" width="64" height="96"/>
-  <object id="48" gid="856" x="357" y="594" width="64" height="96"/>
-  <object id="49" gid="856" x="335" y="630" width="64" height="96"/>
-  <object id="50" gid="856" x="305" y="630" width="64" height="96"/>
-  <object id="51" gid="856" x="301" y="590" width="64" height="96"/>
-  <object id="52" gid="856" x="351" y="555" width="64" height="96"/>
-  <object id="53" gid="856" x="381" y="535" width="64" height="96"/>
-  <object id="54" gid="856" x="414" y="614" width="64" height="96"/>
-  <object id="55" gid="856" x="494" y="660" width="64" height="96"/>
-  <object id="56" gid="856" x="431" y="695" width="64" height="96"/>
-  <object id="57" gid="856" x="326" y="704" width="64" height="96"/>
-  <object id="58" gid="856" x="294" y="721" width="64" height="96"/>
-  <object id="59" gid="856" x="397" y="681" width="64" height="96"/>
   <object id="60" gid="856" x="324.333" y="220.667" width="64" height="96"/>
   <object id="61" gid="856" x="357.667" y="198.667" width="64" height="96"/>
   <object id="62" gid="856" x="363.333" y="250.333" width="64" height="96"/>
@@ -334,17 +321,7 @@
   <object id="73" gid="856" x="721" y="645" width="64" height="96"/>
   <object id="76" gid="856" x="932" y="1165" width="64" height="96"/>
   <object id="77" gid="856" x="870" y="1164" width="64" height="96"/>
-  <object id="82" gid="856" x="1058.91" y="1581.33" width="64" height="96"/>
-  <object id="83" gid="856" x="992.242" y="1605.58" width="64" height="96"/>
-  <object id="84" gid="856" x="919.515" y="1614.67" width="64" height="96"/>
-  <object id="85" gid="856" x="1077.09" y="1563.15" width="64" height="96"/>
   <object id="86" gid="856" x="1161.94" y="1514.67" width="64" height="96"/>
-  <object id="87" gid="856" x="1174.06" y="1560.12" width="64" height="96"/>
-  <object id="88" gid="856" x="1113.45" y="1611.64" width="64" height="96"/>
-  <object id="89" gid="856" x="1146.79" y="1632.85" width="64" height="96"/>
-  <object id="90" gid="856" x="1246.79" y="1638.91" width="64" height="96"/>
-  <object id="91" gid="856" x="1261.94" y="1608.61" width="64" height="96"/>
-  <object id="92" gid="856" x="1264.97" y="1599.52" width="64" height="96"/>
   <object id="93" gid="856" x="1578.67" y="421.333" width="64" height="96"/>
   <object id="94" gid="856" x="1537.33" y="457.333" width="64" height="96"/>
   <object id="95" gid="856" x="1549.33" y="524" width="64" height="96"/>
@@ -364,5 +341,14 @@
   <object id="152" gid="856" x="1063" y="285" width="64" height="96"/>
   <object id="153" gid="856" x="916" y="316" width="64" height="96"/>
   <object id="155" gid="856" x="984" y="374.667" width="64" height="96"/>
+  <object id="156" gid="856" x="384" y="621.333" width="64" height="96"/>
+  <object id="157" gid="856" x="282.667" y="717.333" width="64" height="96"/>
+  <object id="158" gid="856" x="494.667" y="729.333" width="64" height="96"/>
+  <object id="159" gid="856" x="321.333" y="532" width="64" height="96"/>
+  <object id="160" gid="856" x="364" y="701.333" width="64" height="96"/>
+  <object id="161" gid="856" x="1049.82" y="1611.64" width="64" height="96"/>
+  <object id="162" gid="856" x="904.364" y="1660.12" width="64" height="96"/>
+  <object id="163" gid="856" x="883.152" y="1599.52" width="64" height="96"/>
+  <object id="164" gid="856" x="1280.12" y="1608.61" width="64" height="96"/>
  </objectgroup>
 </map>

@@ -11,12 +11,8 @@ OVERLAY_POSITIONS = {
 LAYERS = {
     'water' : 0,
     'ground' : 1,
-    'soil' : 2,
-    'soil_water' : 3,
-    'rain_floor' : 4,
-    'ground_plant': 5,
-    'main' : 7,
-    'house_top' : 8,
-    'fruit' : 9,
-    'rain_drops' : 10
+    'grass' : 2,
+    'main' : 3,
+    'tree' : 4,
+    'roof' : 5
 }
