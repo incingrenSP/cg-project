@@ -29,15 +29,10 @@ class Player(pygame.sprite.Sprite):
         # toggles
         self.timers = {
             'run' : Timer(750, self.run),
-            'weapon_switch' : Timer(200),
+            'weapon_use' : Timer(750),
             'item_use' : Timer(750, self.item_use),
             'item_switch' : Timer(500)
         }
-
-        # weapons
-        self.weapons = ['sword', 'staff', 'scythe', 'rapier', 'spear']
-        self.weapon_index = 0
-        self.selected_weapon = self.weapons[self.weapon_index]
 
         # items
         self.items = ['r_potion', 'b_potion']
@@ -50,7 +45,6 @@ class Player(pygame.sprite.Sprite):
         else:
             self.speed = 200
         
-
     def item_use(self):
         pass
 
@@ -103,31 +97,16 @@ class Player(pygame.sprite.Sprite):
                 self.timers['run'].activate()
                 self.frame_index = 0
 
-            # switch weapon
-            if keys[pygame.K_q] and not self.timers['weapon_switch'].active:
-                self.timers['weapon_switch'].activate()
-                self.weapon_index += 1
-                self.weapon_index = self.weapon_index if self.weapon_index < len(self.weapons) else 0
-                self.selected_weapon = self.weapons[self.weapon_index]
-            elif keys[pygame.K_e] and not self.timers['weapon_switch'].active:
-                self.timers['weapon_switch'].activate()
-                self.weapon_index -= 1
-                self.weapon_index = self.weapon_index if self.weapon_index >= 0 else (len(self.weapons) - 1)
-                self.selected_weapon = self.weapons[self.weapon_index]
-
-            # item use
-
             # item switch
-            if mouse[0] and not self.timers['item_use'].active:
-                self.timers['item_use'].activate()
+            if mouse[0] and not self.timers['weapon_use'].active:
+                self.timers['weapon_use'].activate()
                 self.direction = pygame.math.Vector2()
                 self.frame_index = 0
 
-            if mouse[2] and not self.timers['item_switch'].active:
-                self.timers['item_switch'].activate()
-                self.item_index += 1
-                self.item_index = self.item_index if self.item_index < len(self.items) else 0
-                self.selected_item = self.items[self.item_index]
+            if mouse[2] and not self.timers['item_use'].active:
+                self.timers['item_use'].activate()
+                self.direction = pygame.math.Vector2()
+                self.frame_index = 0
             
     def get_status(self):
         # idle
@@ -135,7 +114,7 @@ class Player(pygame.sprite.Sprite):
             self.status = self.status.split('_')[0] + '_idle'
 
         # attack
-        if self.timers['item_use'].active:
+        if self.timers['weapon_use'].active:
             self.status = self.status.split('_')[0] + '_attack'
         
     def update_timers(self):
@@ -164,7 +143,6 @@ class Player(pygame.sprite.Sprite):
                         
                         self.rect.centery = self.hitbox.centery
                         self.pos.y = self.hitbox.centery
-                    
 
     def move(self, dt):
        

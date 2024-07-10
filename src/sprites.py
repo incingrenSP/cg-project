@@ -25,14 +25,15 @@ class Water(Generic):
         )
 
     def animate(self, dt):
-        self.frame_index += 17 * dt
+        self.frame_index += 14 * dt
         if self.frame_index > len(self.frames):
             self.frame_index = 0
 
         self.image = self.frames[int(self.frame_index)]
 
     def update(self, dt):
-        self.animate(dt)
+        # self.animate(dt)
+        pass
 
 class Decors(Generic):
     def __init__(self, pos, surf, groups):
