@@ -9,14 +9,12 @@ def mass_rename(path):
         new_name = f"{i}" + ext
         os.rename(os.path.join(path, filename), os.path.join(path, new_name))
         i += 1
-        
+
 folder = ['walk', 'idle', 'attack']
 sfolder = ['up', 'down', 'left', 'right']
 for item in folder:
     for file in sfolder:
         path = file + '_' + item
-        file_path = os.path.join('graphics', 'character', path)
+        file_path = os.path.join('graphics', 'character', 'player',  path)
         mass_rename(file_path)
-
-# file_path = os.path.join('graphics', 'water')
-# mass_rename(file_path)
+        
