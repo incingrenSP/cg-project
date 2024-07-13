@@ -1,3 +1,10 @@
-a = [1, 2]
-x, y = a
-print(x, y)
+frames = {
+        'fireball' : 1,
+        'slash' : 2
+    }
+
+for name, items in frames.items():
+    items += 1
+    frames[name] = items
+
+print(frames)

@@ -12,7 +12,7 @@ def mass_rename(path):
 
 folder = ['walk', 'idle', 'attack']
 sfolder = ['up', 'down', 'left', 'right']
-for item in sfolder:
-    file_path = os.path.join('graphics', 'character', 'enemies', 'slime', item)
+for item in ['fireball']:
+    file_path = os.path.join('graphics', 'particles', item)
     mass_rename(file_path)
         

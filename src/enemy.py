@@ -28,6 +28,7 @@ class Enemy(Entity):
         self.knock_back = enemy_info['knock_back']
         self.attack_range = enemy_info['attack_range']
         self.detection_range = enemy_info['detection_range']
+        self.attack_type = enemy_info['attack_type']
 
         # interactions
         self.can_attack = True
@@ -65,7 +66,7 @@ class Enemy(Entity):
     def actions(self, player):
         distance = self.get_player_distance(player)[0]
         if distance <= self.attack_range and self.can_attack:
-            self.damage_player(self.damage)
+            self.damage_player(self.damage, self.attack_type)
             self.can_attack = False
             self.attack_time = pygame.time.get_ticks()
         elif distance <= self.detection_range:
