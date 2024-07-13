@@ -36,7 +36,8 @@ class Level:
         layouts = {
             'boundary' : import_csv(os.path.join('data', 'map_blocktiles.csv')),
             'flowers' : import_csv(os.path.join('data', 'map_flowers.csv')),
-            'objects' : import_csv(os.path.join('data', 'map_objects.csv'))
+            'objects' : import_csv(os.path.join('data', 'map_objects.csv')),
+            'entities' : import_csv(os.path.join('data', 'map_entities.csv'))
         }
         graphics = {
             'flowers' : import_folder(os.path.join('graphics', 'weed')),
@@ -61,7 +62,29 @@ class Level:
                         if style == 'objects':
                             obj_surf = graphics['objects'][int(col)]
                             Tile((x, y), [self.all_sprites, self.collision_sprites], 'object', obj_surf)
-                        
+                        if style == 'entities':
+                            if col == '380':
+                                self.player = Player(
+                                                    (x, y),
+                                                    self.all_sprites,
+                                                    self.collision_sprites,
+                                                    self.spawn_attack,
+                                                    self.despawn_attack,
+                                                    self.use_item,
+                                                    self.kill_item
+                                                )
+                            else:
+                                if col == '381':
+                                    monster_name = 'slime'
+                                Enemy(
+                                        monster_name,
+                                        (x, y),
+                                        [self.all_sprites, self.attackable_sprites],
+                                        self.collision_sprites,
+                                        self.damage_player,
+                                        self.add_exp
+                                    )
+                                
         Dragon(
             (64 * TILESIZE, 19 * TILESIZE),
             [self.all_sprites, self.attackable_sprites],
@@ -69,25 +92,6 @@ class Level:
             self.damage_player,
             self.add_exp
         )
-
-        Enemy(
-            'slime',
-            (52 * TILESIZE, 49 * TILESIZE),
-            [self.all_sprites, self.attackable_sprites],
-            self.collision_sprites,
-            self.damage_player,
-            self.add_exp
-        )
-
-        self.player = Player(
-            (62 * TILESIZE, 48 * TILESIZE),
-            self.all_sprites,
-            self.collision_sprites,
-            self.spawn_attack,
-            self.despawn_attack,
-            self.use_item,
-            self.kill_item
-            )
 
     def spawn_attack(self):
         self.current_attack = Weapon(self.player, [self.attack_sprites])
