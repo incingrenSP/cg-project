@@ -134,6 +134,7 @@ class Player(Entity):
             self.frame_index = 0
 
         self.image = animation[int(self.frame_index)]
+        self.rect = self.image.get_rect(center = self.hitbox.center)
 
     def cooldowns(self):
         current_time = pygame.time.get_ticks()

@@ -14,7 +14,7 @@ class Enemy(Entity):
         self.image = self.animations[self.status][int(self.frame_index)]
 
         # movement
-        self.rect = self.image.get_rect(topleft = pos)
+        self.rect = self.image.get_rect(center = pos)
         self.hitbox = self.rect.copy()
         self.obstacle_sprites = obstacle_sprites
 
@@ -78,6 +78,7 @@ class Enemy(Entity):
 
         self.image = animation[int(self.frame_index)]
         self.image = pygame.transform.scale_by(self.image, 3)
+        self.rect = self.image.get_rect(center = self.hitbox.center)
 
     def update(self):
         self.check_status()
@@ -99,17 +100,6 @@ class Dragon(Enemy):
         self.hitbox.y += self.direction.y * self.speed
 
         self.rect.center = self.hitbox.center
-
-    def animate(self):
-        animation = self.animations[self.status]
-
-        # animate
-        self.frame_index += self.animation_speed
-        if self.frame_index >= len(animation):
-            self.frame_index = 0
-
-        self.image = animation[int(self.frame_index)]
-        self.image = pygame.transform.scale_by(self.image, 3)
         
     def update(self):
         self.check_status()
