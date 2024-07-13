@@ -15,6 +15,8 @@ class Level:
 
         self.all_sprites = CameraGroup()    # sprites that are rendered
         self.collision_sprites = pygame.sprite.Group()  # sprites that interact via collisions
+        self.attack_sprites = pygame.sprite.Group() # sprites that can attack
+        self.attackable_sprites = pygame.sprite.Group() # sprites that can be attacked
 
         # attack sprites
         self.current_attack = None
@@ -50,7 +52,7 @@ class Level:
 
                         if style == 'flowers':
                             random_flower = random.choice(graphics['flowers'])
-                            Tile((x, y), [self.all_sprites, self.collision_sprites], 'floor', random_flower)
+                            Tile((x, y), [self.all_sprites, self.collision_sprites, self.attackable_sprites], 'grass', random_flower)
 
                         if style == 'objects':
                             obj_surf = graphics['objects'][int(col)]
@@ -58,15 +60,17 @@ class Level:
                         
         Dragon(
             (64 * TILESIZE, 19 * TILESIZE),
-            self.all_sprites,
-            self.collision_sprites
+            [self.all_sprites, self.attackable_sprites],
+            self.collision_sprites,
+            self.damage_player,
         )
 
         Enemy(
             'slime',
             (52 * TILESIZE, 49 * TILESIZE),
-            self.all_sprites,
-            self.collision_sprites
+            [self.all_sprites, self.attackable_sprites],
+            self.collision_sprites,
+            self.damage_player
         )
 
         self.player = Player(
@@ -80,7 +84,7 @@ class Level:
             )
 
     def spawn_attack(self):
-        self.current_attack = Weapon(self.player, self.all_sprites)
+        self.current_attack = Weapon(self.player, [self.attack_sprites])
 
     def use_item(self, item_type, heal):
         if item_type in ['potion', 'hi_potion', 'elixir']:
@@ -99,12 +103,31 @@ class Level:
             self.current_item.kill()
         self.current_item = None
 
+    def player_attack(self):
+        if self.attack_sprites:
+            for attack_sprite in self.attack_sprites:
+                colliding_sprites = pygame.sprite.spritecollide(attack_sprite, self.attackable_sprites, False)
+                if colliding_sprites:
+                    for target_sprite in colliding_sprites:
+                        if target_sprite.sprite_type == 'grass':
+                            target_sprite.kill()
+                        else:
+                            target_sprite.get_damage(self.player, attack_sprite.sprite_type)
+
+    def damage_player(self, amount):
+        if self.player.vulnerable:
+            self.player.health -= amount
+            self.player.vulnerable = False
+            self.player.hit_time = pygame.time.get_ticks()
+            # spawn particles
+
     def run(self):
         # update and draw
         self.display_surf.fill('black')
         self.all_sprites.custom_draw(self.player)
         self.all_sprites.update()
         self.all_sprites.enemy_update(self.player)
+        self.player_attack()
         self.ui.display(self.player)
 
 class CameraGroup(pygame.sprite.Group):

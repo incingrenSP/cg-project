@@ -56,6 +56,18 @@ class Player(Entity):
         self.exp = 230
         self.speed = 6
 
+        # regeneration
+        self.regen = True
+        self.regen_rate = 0.1
+        self.regen_time = None
+        self.regen_cd = 100
+        self.stamina_cost = 20
+
+        # i-frames
+        self.vulnerable = True
+        self.hit_time = None
+        self.invincible_duration = 600
+
     def import_player_assets(self):
         import_folder_path = os.path.join('graphics', 'character', 'player')
         self.animation = {
@@ -91,7 +103,7 @@ class Player(Entity):
                 self.direction.y = 0
 
             # ATTACK INPUT
-            if keys[pygame.K_x] and not self.attacking:
+            if keys[pygame.K_x] and not self.attacking and self.stamina >= self.stamina_cost:
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
                 self.create_attack()
@@ -136,6 +148,13 @@ class Player(Entity):
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center = self.hitbox.center)
 
+        # flicker
+        if not self.vulnerable:
+            alpha = self.wave_value()
+            self.image.set_alpha(alpha)
+        else:
+            self.image.set_alpha(255)
+
     def cooldowns(self):
         current_time = pygame.time.get_ticks()
         if self.attacking:
@@ -151,9 +170,27 @@ class Player(Entity):
                 self.using_item = False
                 self.kill_item()
 
+        if not self.vulnerable:
+            if current_time - self.hit_time >= self.invincible_duration:
+                self.vulnerable = True
+
+    def stamina_regen(self):
+        if self.attacking:
+            self.regen = False
+        else:
+            current_time = pygame.time.get_ticks()
+            if current_time - self.regen_cd >= 0:
+                self.stamina += self.regen_rate
+                if self.stamina >= self.stats['stamina']:
+                    self.stamina = self.stats['stamina']
+
+    def get_weapon_damage(self):
+        return self.stats['attack']
+
     def update(self):
         self.input()
         self.cooldowns()
         self.get_status()
         self.animate()
         self.move()
+        self.stamina_regen()
