@@ -4,7 +4,7 @@ from misc import *
 from entity import Entity
 
 class Enemy(Entity):
-    def __init__(self, enemy_name, pos, groups):
+    def __init__(self, enemy_name, pos, groups, obstacle_sprites):
         super().__init__(groups)
         self.sprite_type = 'enemy'
 
@@ -14,8 +14,9 @@ class Enemy(Entity):
         self.image = self.animations[self.status][int(self.frame_index)]
 
         # movement
-        self.rect = self.image.get_rect(center = pos)
+        self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.copy()
+        self.obstacle_sprites = obstacle_sprites
 
         # stats
         self.enemy_name = enemy_name
@@ -51,13 +52,10 @@ class Enemy(Entity):
     def actions(self, player):
         distance = self.get_player_distance(player)[0]
         if distance <= self.attack_range:
-            print('dragon bout to whoop yo ass')
             self.direction = self.get_player_distance(player)[1]
         elif distance <= self.detection_range:
-            print('x gon give it to ya')
             self.direction = self.get_player_distance(player)[1]
         else:
-            print('safe')
             self.direction = pygame.math.Vector2()
 
     def check_status(self):
@@ -70,6 +68,37 @@ class Enemy(Entity):
         elif self.direction.y == -1:
             self.status = 'up'
         
+    def animate(self):
+        animation = self.animations[self.status]
+
+        # animate
+        self.frame_index += self.animation_speed
+        if self.frame_index >= len(animation):
+            self.frame_index = 0
+
+        self.image = animation[int(self.frame_index)]
+        self.image = pygame.transform.scale_by(self.image, 3)
+
+    def update(self):
+        self.check_status()
+        self.animate()
+        self.move()
+
+    def enemy_update(self, player):
+        self.actions(player)
+        
+class Dragon(Enemy):
+    def __init__(self, pos, groups, obstacle_sprites):
+        super().__init__('dragon', pos, groups, obstacle_sprites)
+
+    def move(self):
+        if self.direction.magnitude() != 0:
+            self.direction = self.direction.normalize()
+
+        self.hitbox.x += self.direction.x * self.speed
+        self.hitbox.y += self.direction.y * self.speed
+
+        self.rect.center = self.hitbox.center
 
     def animate(self):
         animation = self.animations[self.status]
@@ -80,11 +109,8 @@ class Enemy(Entity):
             self.frame_index = 0
 
         self.image = animation[int(self.frame_index)]
-        self.image = pygame.transform.scale_by(self.image, 5)
-
-    def collision(self, direction):
-        pass
-
+        self.image = pygame.transform.scale_by(self.image, 3)
+        
     def update(self):
         self.check_status()
         self.animate()
@@ -92,5 +118,4 @@ class Enemy(Entity):
 
     def enemy_update(self, player):
         self.actions(player)
-        
 

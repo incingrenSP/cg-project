@@ -3,7 +3,7 @@ from settings import *
 from misc import *
 from sprites import Tile
 from player import Player
-from enemy import Enemy
+from enemy import Enemy, Dragon
 from weapon import Weapon
 from ui import UI
 from debug import debug
@@ -56,11 +56,19 @@ class Level:
                             obj_surf = graphics['objects'][int(col)]
                             Tile((x, y), [self.all_sprites, self.collision_sprites], 'object', obj_surf)
                         
-        Enemy(
-            'dragon',
+        Dragon(
             (64 * TILESIZE, 19 * TILESIZE),
-            self.all_sprites
+            self.all_sprites,
+            self.collision_sprites
         )
+
+        Enemy(
+            'slime',
+            (52 * TILESIZE, 49 * TILESIZE),
+            self.all_sprites,
+            self.collision_sprites
+        )
+
         self.player = Player(
             (62 * TILESIZE, 48 * TILESIZE),
             self.all_sprites,
