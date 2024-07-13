@@ -12,6 +12,11 @@ item_data = {
     'elixir' : {'cooldown' : 200, 'heal' : 1000, 'graphics' : os.path.join('graphics', 'icons', 'elixir.png')}
 }
 
+# enemies
+enemy_data = {
+    'dragon' : {'health' : 2000, 'damage' : 150, 'exp' : 5000, 'speed' : 3, 'attack_range' : 500, 'detection_range' : 1000}
+}
+
 # ui
 BAR_HEIGHT = 20
 HEALTH_BAR_WIDTH = 200

@@ -3,6 +3,7 @@ from settings import *
 from misc import *
 from sprites import Tile
 from player import Player
+from enemy import Enemy
 from weapon import Weapon
 from ui import UI
 from debug import debug
@@ -55,7 +56,11 @@ class Level:
                             obj_surf = graphics['objects'][int(col)]
                             Tile((x, y), [self.all_sprites, self.collision_sprites], 'object', obj_surf)
                         
-
+        Enemy(
+            'dragon',
+            (64 * TILESIZE, 19 * TILESIZE),
+            self.all_sprites
+        )
         self.player = Player(
             (62 * TILESIZE, 48 * TILESIZE),
             self.all_sprites,
@@ -71,13 +76,13 @@ class Level:
 
     def use_item(self, item_type, heal):
         if item_type in ['potion', 'hi_potion', 'elixir']:
-            self.player.health += heal
-            if self.player.health > self.player.stats['health']:
-                self.player.health = self.player.stats['health']
+            self.player.stamina += heal
+            if self.player.stamina > self.player.stats['stamina']:
+                self.player.stamina = self.player.stats['stamina']
 
     def despawn_attack(self):
         if self.current_attack:
-            self.player.health -= 20
+            self.player.stamina -= 20
             self.current_attack.kill()
         self.current_attack = None
 
@@ -91,6 +96,7 @@ class Level:
         self.display_surf.fill('black')
         self.all_sprites.custom_draw(self.player)
         self.all_sprites.update()
+        self.all_sprites.enemy_update(self.player)
         self.ui.display(self.player)
 
 class CameraGroup(pygame.sprite.Group):
@@ -117,4 +123,7 @@ class CameraGroup(pygame.sprite.Group):
             offset_pos = sprite.rect.topleft - self.offset
             self.display_surf.blit(sprite.image, offset_pos)
 
-        
+    def enemy_update(self, player):
+        enemy_sprites = [sprite for sprite in self.sprites() if hasattr(sprite, 'sprite_type') and sprite.sprite_type == 'enemy']
+        for enemy in enemy_sprites:
+            enemy.enemy_update(player)
