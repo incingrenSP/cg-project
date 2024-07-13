@@ -67,6 +67,7 @@ class Level:
             [self.all_sprites, self.attackable_sprites],
             self.collision_sprites,
             self.damage_player,
+            self.add_exp
         )
 
         Enemy(
@@ -74,7 +75,8 @@ class Level:
             (52 * TILESIZE, 49 * TILESIZE),
             [self.all_sprites, self.attackable_sprites],
             self.collision_sprites,
-            self.damage_player
+            self.damage_player,
+            self.add_exp
         )
 
         self.player = Player(
@@ -125,6 +127,12 @@ class Level:
             self.player.hit_time = pygame.time.get_ticks()
             # spawn particles
             self.animator.generate_effect(self.player.rect.center, self.all_sprites, attack_type)
+
+    def add_exp(self, amount):
+        self.player.exp += amount
+        while self.player.exp >= self.player.stats['exp']:
+            self.player.exp -= self.player.stats['exp']
+            self.player.lvl_up()
 
     def run(self):
         # update and draw

@@ -1,4 +1,5 @@
 import pygame
+from math import exp
 from settings import *
 import os
 from entity import Entity
@@ -48,12 +49,18 @@ class Player(Entity):
             'stamina' : 50,
             'exp' : 500,
             'attack' : 10,
-            'speed' : 15,
         }
+        self.max_stats = {
+            'health' : 9999,
+            'stamina' : 5000,
+            'attack' : 150,
+        }
+        self.exp_curve = []
+
         self.lvl = 1
         self.health = self.stats['health']
         self.stamina = self.stats['stamina']
-        self.exp = 230
+        self.exp = 0
         self.speed = 6
 
         # regeneration
@@ -186,6 +193,19 @@ class Player(Entity):
 
     def get_weapon_damage(self):
         return self.stats['attack']
+
+    def lvl_up(self):
+        # max attributes
+        self.stats['health'] += 150
+        self.stats['stamina'] += 50
+        self.stats['exp'] += 70
+        self.stats['attack'] += 10
+
+        self.health = self.stats['health']
+        self.stamina = self.stats['stamina']
+        self.attack = self.stats['attack']
+        self.lvl += 1
+
 
     def update(self):
         self.input()

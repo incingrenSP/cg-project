@@ -4,7 +4,7 @@ from misc import *
 from entity import Entity
 
 class Enemy(Entity):
-    def __init__(self, enemy_name, pos, groups, obstacle_sprites, damage_player):
+    def __init__(self, enemy_name, pos, groups, obstacle_sprites, damage_player, add_exp):
         super().__init__(groups)
         self.sprite_type = 'enemy'
 
@@ -36,6 +36,7 @@ class Enemy(Entity):
         self.attack_cd = 800
 
         self.damage_player = damage_player
+        self.add_exp = add_exp
 
         # i-frames
         self.vulnerable = True
@@ -124,6 +125,7 @@ class Enemy(Entity):
     def check_death(self):
         if self.health <= 0:
             self.kill()
+            self.add_exp(self.exp)
 
     def hit_reaction(self):
         if not self.vulnerable:
@@ -141,8 +143,8 @@ class Enemy(Entity):
         self.actions(player)
         
 class Dragon(Enemy):
-    def __init__(self, pos, groups, obstacle_sprites, damage_player):
-        super().__init__('dragon', pos, groups, obstacle_sprites, damage_player)
+    def __init__(self, pos, groups, obstacle_sprites, damage_player, add_exp):
+        super().__init__('dragon', pos, groups, obstacle_sprites, damage_player, add_exp)
 
     def move(self):
         if self.direction.magnitude() != 0:

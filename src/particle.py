@@ -5,15 +5,10 @@ class Animator:
     def __init__(self):
         self.frames = {
             'fireball' : import_folder(os.path.join('graphics', 'particles', 'fireball')),
-            'slash' : import_folder(os.path.join('graphics', 'particles', 'slash'))
+            'slash' : import_folder(os.path.join('graphics', 'particles', 'slash'), 0.2)
         }
 
     def generate_effect(self, pos, groups, animation_type):
-        for name, items in self.frames.items():
-            for image in items:
-                image = pygame.transform.scale_by(image, 0.3)
-            self.frames[name] = items
-
         animations = self.frames[animation_type]
         ParticleEffect(pos, animations, groups)
 
