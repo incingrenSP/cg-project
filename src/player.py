@@ -21,7 +21,7 @@ class Player(pygame.sprite.Sprite):
 
         # attack/items
         self.attacking = False
-        self.attack_cd = 800
+        self.attack_cd = 700
         self.attack_time = None
 
         self.create_attack = create_attack
@@ -47,7 +47,7 @@ class Player(pygame.sprite.Sprite):
         }
         self.health = self.stats['health']
         self.stamina = self.stats['stamina']
-        self.exp = 0
+        self.exp = 230
         self.speed = 3
 
     def import_player_assets(self):

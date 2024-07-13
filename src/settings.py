@@ -7,9 +7,9 @@ TILESIZE = 48
 
 # items
 item_data = {
-    'potion' : [200, 50],
-    'hi-potion' : [250, 150],
-    'elixir' : [500, 9999]
+    'potion' : {'cooldown' : 200, 'heal' : 50, 'graphics' : os.path.join('graphics', 'icons', 'potion.png')},
+    'hi-potion' : {'cooldown' : 200, 'heal' : 150, 'graphics' : os.path.join('graphics', 'icons', 'hi_potion.png')},
+    'elixir' : {'cooldown' : 200, 'heal' : 1000, 'graphics' : os.path.join('graphics', 'icons', 'elixir.png')}
 }
 
 # ui
@@ -21,8 +21,8 @@ ITEM_SIZE = 60
 UI_FONT = os.path.join('fonts', 'mplus-1m-regular.woff')
 UI_FONT_SIZE = 18
 
-UI_BG_COLOR = 'black'
-UI_BORDER_COLOR = 'yellow'
-HEALTH_COLOR = 'red'
-STAMINA_COLOR = 'green'
-EXP_COLOR = 'blue'
+UI_BG_COLOR = '#404040'
+UI_BORDER_COLOR = '#ff9d47'
+HEALTH_COLOR = '#b50030'
+STAMINA_COLOR = '#24875e'
+EXP_COLOR = '#d9ff42'

@@ -12,6 +12,14 @@ class UI:
         self.stamina_bar_rect = pygame.Rect(10, 34, STAMINA_BAR_WIDTH, BAR_HEIGHT)
         self.exp_bar_rect = pygame.Rect(10, 58, EXP_BAR_WIDTH, BAR_HEIGHT)
 
+        # icon setup
+        self.item_graphics = []
+        for items in item_data.values():
+            path = items['graphics']
+            item = pygame.image.load(path)
+            item = pygame.transform.scale_by(item, 3)
+            self.item_graphics.append(item)
+
     def show_bar(self, current_amount, max_amount, bg_rect, color):
         pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
 
@@ -38,9 +46,16 @@ class UI:
     def selection_box(self, left, top):
         bg_rect = pygame.Rect(left, top, ITEM_SIZE, ITEM_SIZE)
         pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
+        return bg_rect
 
     def item_overlay(self, item_index):
-        pass
+        bg_rect = self.selection_box(10, 650)
+        item_surf = self.item_graphics[item_index]
+        item_rect = item_surf.get_rect(center = bg_rect.center)
+
+        self.display_surface.blit(item_surf, item_rect)
+        pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, bg_rect, 3)
+
 
     def display(self, player):
         self.show_bar(player.health, player.stats['health'], self.health_bar_rect, HEALTH_COLOR)
@@ -48,4 +63,5 @@ class UI:
         self.show_bar(player.exp, player.stats['exp'], self.exp_bar_rect, EXP_COLOR)
 
         self.show_exp(player.exp)
-        self.selection_box(10, 650)
+        self.item_overlay(player.item_index)
+        
