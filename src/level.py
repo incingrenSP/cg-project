@@ -17,6 +17,7 @@ class Level:
 
         # attack sprites
         self.current_attack = None
+        self.current_item = None
 
         # drawing the game
         self.create_map()
@@ -55,15 +56,35 @@ class Level:
                             Tile((x, y), [self.all_sprites, self.collision_sprites], 'object', obj_surf)
                         
 
-        self.player = Player((62 * TILESIZE, 48 * TILESIZE), self.all_sprites, self.collision_sprites, self.spawn_attack, self.despawn_attack)
+        self.player = Player(
+            (62 * TILESIZE, 48 * TILESIZE),
+            self.all_sprites,
+            self.collision_sprites,
+            self.spawn_attack,
+            self.despawn_attack,
+            self.use_item,
+            self.kill_item
+            )
 
     def spawn_attack(self):
         self.current_attack = Weapon(self.player, self.all_sprites)
 
+    def use_item(self, item_type, heal):
+        if item_type in ['potion', 'hi_potion', 'elixir']:
+            self.player.health += heal
+            if self.player.health > self.player.stats['health']:
+                self.player.health = self.player.stats['health']
+
     def despawn_attack(self):
         if self.current_attack:
+            self.player.health -= 20
             self.current_attack.kill()
         self.current_attack = None
+
+    def kill_item(self):
+        if self.current_item:
+            self.current_item.kill()
+        self.current_item = None
 
     def run(self):
         # update and draw

@@ -33,8 +33,8 @@ class UI:
         pygame.draw.rect(self.display_surface, color, current_rect)
         pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, bg_rect, 3)
 
-    def show_exp(self, exp):
-        text_surf = self.font.render(f'Score: {str(int(exp))}', False, 'white')
+    def show_lvl(self, lvl):
+        text_surf = self.font.render(f'Lv: {str(int(lvl))}', False, 'white')
         x = SCREEN_WIDTH - 20
         y = SCREEN_HEIGHT - 20
         text_rect = text_surf.get_rect(bottomright = (x, y))
@@ -56,12 +56,20 @@ class UI:
         self.display_surface.blit(item_surf, item_rect)
         pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, bg_rect, 3)
 
+        text_surf = self.font.render(f'{str(list(item_data.keys())[item_index])}', False, 'white')
+        x = 80
+        y = SCREEN_HEIGHT - 20
+        text_rect = text_surf.get_rect(bottomleft = (x, y))
+
+        pygame.draw.rect(self.display_surface, UI_BG_COLOR, text_rect.inflate(15, 15))
+        self.display_surface.blit(text_surf, text_rect)
+        pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, text_rect.inflate(15, 15), 3)
 
     def display(self, player):
         self.show_bar(player.health, player.stats['health'], self.health_bar_rect, HEALTH_COLOR)
         self.show_bar(player.stamina, player.stats['stamina'], self.stamina_bar_rect, STAMINA_COLOR)
         self.show_bar(player.exp, player.stats['exp'], self.exp_bar_rect, EXP_COLOR)
 
-        self.show_exp(player.exp)
+        self.show_lvl(player.lvl)
         self.item_overlay(player.item_index)
         

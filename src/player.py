@@ -4,7 +4,7 @@ import os
 from misc import import_folder
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, obstacles, create_attack, kill_attack):
+    def __init__(self, pos, groups, obstacles, create_attack, kill_attack, use_item, kill_item):
         super().__init__(groups)
         self.image = pygame.image.load(os.path.join('graphics', 'character', 'player','down_idle', '0.png')).convert_alpha()
         self.image = pygame.transform.scale_by(self.image, 3)
@@ -19,15 +19,24 @@ class Player(pygame.sprite.Sprite):
         # movement
         self.direction = pygame.math.Vector2()
 
-        # attack/items
+        # attack
         self.attacking = False
         self.attack_cd = 700
         self.attack_time = None
 
         self.create_attack = create_attack
         self.kill_attack = kill_attack
+
+        # item
         self.item_index = 0
         self.items = list(item_data.keys())[self.item_index]
+
+        self.using_item = False
+        self.item_cd = list(item_data.values())[self.item_index]['cooldown']
+        self.use_time = None
+
+        self.use_item = use_item
+        self.kill_item = kill_item
 
         self.can_switch = True
         self.switch_timer = None
@@ -45,6 +54,7 @@ class Player(pygame.sprite.Sprite):
             'attack' : 10,
             'speed' : 15,
         }
+        self.lvl = 1
         self.health = self.stats['health']
         self.stamina = self.stats['stamina']
         self.exp = 230
@@ -89,6 +99,16 @@ class Player(pygame.sprite.Sprite):
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
                 self.create_attack()
+
+            if keys[pygame.K_c] and not self.using_item:
+                self.using_item = True
+                self.use_time = pygame.time.get_ticks()
+
+                item_type = list(item_data.keys())[self.item_index]
+                heal = list(item_data.values())[self.item_index]['heal']
+
+                self.use_item(item_type, heal)
+
             if keys[pygame.K_v] and self.can_switch:
                 self.can_switch = False
                 self.switch_timer = pygame.time.get_ticks()
@@ -161,6 +181,11 @@ class Player(pygame.sprite.Sprite):
         if not self.can_switch:
             if current_time - self.switch_timer >= self.switch_cd:
                 self.can_switch = True
+        
+        if self.using_item:
+            if current_time - self.use_time >= self.item_cd:
+                self.using_item = False
+                self.kill_item()
 
     def update(self):
         self.input()
