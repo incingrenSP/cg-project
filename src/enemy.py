@@ -28,6 +28,11 @@ class Enemy(Entity):
         self.attack_range = enemy_info['attack_range']
         self.detection_range = enemy_info['detection_range']
 
+        # interactions
+        self.can_attack = True
+        self.attack_time = None
+        self.attack_cd = 400
+
     def import_graphics(self, name):
         self.animations = {
             'down' : [], 'left' : [], 'right' : [], 'up' : []
@@ -51,8 +56,10 @@ class Enemy(Entity):
 
     def actions(self, player):
         distance = self.get_player_distance(player)[0]
-        if distance <= self.attack_range:
-            self.direction = self.get_player_distance(player)[1]
+        if distance <= self.attack_range and self.can_attack:
+            self.can_attack = False
+            self.attack_time = pygame.time.get_ticks()
+            print(f'{self.enemy_name} attacked you!')
         elif distance <= self.detection_range:
             self.direction = self.get_player_distance(player)[1]
         else:
@@ -80,7 +87,14 @@ class Enemy(Entity):
         self.image = pygame.transform.scale_by(self.image, 3)
         self.rect = self.image.get_rect(center = self.hitbox.center)
 
+    def cooldown(self):
+        current_time = pygame.time.get_ticks()
+        if not self.can_attack:
+            if current_time - self.attack_time >= self.attack_cd:
+                self.can_attack = True
+
     def update(self):
+        self.cooldown()
         self.check_status()
         self.animate()
         self.move()

@@ -14,7 +14,7 @@ item_data = {
 
 # enemies
 enemy_data = {
-    'dragon' : {'health' : 2000, 'damage' : 150, 'exp' : 5000, 'speed' : 3, 'attack_range' : 500, 'detection_range' : 1000},
+    'dragon' : {'health' : 2000, 'damage' : 150, 'exp' : 5000, 'speed' : 3, 'attack_range' : 400, 'detection_range' : 500},
     'slime' : {'health' : 20, 'damage' : 3, 'exp' : 30, 'speed' : 3, 'attack_range' : 100, 'detection_range' : 300}
 }
 
