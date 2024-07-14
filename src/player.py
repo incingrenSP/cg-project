@@ -65,7 +65,7 @@ class Player(Entity):
 
         # regeneration
         self.regen = True
-        self.regen_rate = 0.5
+        self.regen_rate = 0.5 * self.stamina // 2
         self.regen_time = None
         self.regen_cd = 100
         self.stamina_cost = 20
