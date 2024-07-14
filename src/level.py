@@ -99,12 +99,12 @@ class Level:
     def use_item(self, item_type, heal):
         if item_type in ['potion', 'hi_potion', 'elixir']:
             self.player.health += heal
-            if self.player.health > self.player.stats['health']:
+            if self.player.health >= self.player.stats['health']:
                 self.player.health = self.player.stats['health']
 
     def despawn_attack(self):
         if self.current_attack:
-            self.player.stamina -= 20
+            self.player.stamina -= 35 * self.player.lvl
             self.current_attack.kill()
         self.current_attack = None
 

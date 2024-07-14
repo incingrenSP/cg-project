@@ -8,14 +8,14 @@ TILESIZE = 48
 # items
 item_data = {
     'potion' : {'cooldown' : 200, 'heal' : 50, 'graphics' : os.path.join('graphics', 'icons', 'potion.png')},
-    'hi-potion' : {'cooldown' : 200, 'heal' : 150, 'graphics' : os.path.join('graphics', 'icons', 'hi_potion.png')},
+    'hi-potion' : {'cooldown' : 200, 'heal' : 500, 'graphics' : os.path.join('graphics', 'icons', 'hi_potion.png')},
     'elixir' : {'cooldown' : 200, 'heal' : 1000, 'graphics' : os.path.join('graphics', 'icons', 'elixir.png')}
 }
 
 # enemies
 enemy_data = {
-    'dragon' : {'health' : 2000, 'damage' : 150, 'exp' : 5000, 'speed' : 3, 'knock_back' : 1000,'attack_range' : 100, 'detection_range' : 400, 'attack_type' : 'fireball'},
-    'slime' : {'health' : 20, 'damage' : 3, 'exp' : 700, 'speed' : 3, 'knock_back' : 200,'attack_range' : 50, 'detection_range' : 300, 'attack_type' : 'slash'}
+    'dragon' : {'health' : 2000, 'damage' : 100, 'exp' : 5000, 'speed' : 4, 'knock_back' : 1000,'attack_range' : 300, 'detection_range' : 700, 'attack_type' : 'fireball'},
+    'slime' : {'health' : 20, 'damage' : 8, 'exp' : 200, 'speed' : 3, 'knock_back' : 350,'attack_range' : 50, 'detection_range' : 300, 'attack_type' : 'slash'}
 }
 
 # ui
