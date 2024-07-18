@@ -1,5 +1,5 @@
-# Deskription
+# Description
 
 ROLL: ACE078BCT058
 
-A projekt for Komputer Graphiks (BCT III) XDD
+A project for Computer Graphics (BCT III)
